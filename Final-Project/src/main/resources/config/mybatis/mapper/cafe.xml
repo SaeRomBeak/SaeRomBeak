@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cafe">
+
+	<!-- 카페추출하기-->
+	 <select id="cafe_list" resultType="vo.CafeVo">
+	 select * from c_cafe order by c_regdate desc
+	<!-- <![CDATA[ select * from c_cafe where rownum <= 6 order by c_name ]]> -->
+	</select>
+
+	<!-- 오늘 등록한 카페수  -->
+	<select id="cafe_su" resultType="int">
+		select nvl(count(*),0) from c_cafe 
+		where to_char(c_regdate,'YYYY-MM-dd') = to_char(sysdate,'YYYY-MM-dd')  
+	</select>
+	
+	
+	<!-- 카페 카테고리별 구하기 -->
+	<resultMap type="vo.CafeVo" id="cafe_list_map">
+	   <result  property="c_idx"  column="c_idx"/>
+
+	   <!-- 한건만조회하는것   후속 xml-->
+		<association property="review_list"  
+                   column="{c_idx=c_idx}"
+                   select="cafe_review_list"/> 
+                   
+         <!--   <collection property="review_list"   
+	               column="{c_idx=c_idx}"
+	               select="cafe_review_list" /> -->
+	</resultMap>
+
+	<!-- 5개씩 뽑아오기 -->
+	<select id="cafe_select" parameterType="java.util.Map" resultMap="cafe_list_map">
+		select a.* from 
+		(
+		   select ROWNUM as RNUM, b.* 
+		   from
+		   ( 
+		       select * from c_cafe
+		         <if test="local!=null">
+		         where c_addr like  #{local} || '%'
+		          </if>
+		       order by c_regdate desc
+		    ) b 
+		) a
+		where a.RNUM between #{start} and  #{end} 
+	</select>
+
+	<!-- 리뷰랑 평점  -->
+	<select id="cafe_review_list"  resultType="vo.ReviewVo">
+	select r.*,
+			round((select avg(r_grade) from c_review where c_idx = #{c_idx}),1) avg
+			from 
+			   (select * from c_review where c_idx=#{c_idx} order by r_grade desc) r
+	where rownum = 1 
+	</select> 
+
+	<!-- 카페등록하기 -->
+	<insert id="cafe_insert" parameterType="vo.CafeVo" >
+		insert into c_cafe values(c_cafe_seq.nextVal,
+									#{c_name},#{c_addr},#{c_tel},#{c_price},
+									#{c_park},#{c_time},#{c_hday},#{c_url},
+									#{c_map},#{c_photo1},#{c_photo2},
+									#{c_photo3},#{c_photo4},#{c_photo5},
+									#{c_menu1},#{c_menu2},#{c_menu3},#{c_menu4},
+									#{c_tag},#{c_hit},sysdate)							
+	</insert>
+	
+	
+	
+	<!-- 카페 한건에 대한 정보 조회하기 -->
+	<select id="cafe_idx" parameterType="int" resultType="vo.CafeVo">
+		select * from c_cafe where c_idx=#{c_idx}
+	</select>
+
+
+
+	<update id="cafe_update" parameterType="vo.CafeVo" >
+		update c_cafe set c_name=#{c_name},c_addr=#{c_addr},	
+						  c_tel=#{c_tel}, c_price=#{c_price},
+						  c_park=#{c_park},c_time=#{c_time},
+						  c_hday=#{c_hday}, c_url=#{c_url},
+						  c_map=#{c_map}, c_menu1=#{c_menu1}, c_menu2=#{c_menu2},
+						  c_menu3=#{c_menu3}, c_menu4=#{c_menu4},
+						  c_tag=#{c_tag},  c_regdate=sysdate  
+						  where c_idx=#{c_idx}							
+	</update>
+	
+	
+	<!-- 카페정보삭제하기 -->
+	<delete id="cafe_delete" parameterType="int">
+		delete from c_cafe where c_idx=#{c_idx}
+	</delete>
+	
+	
+	
+	<update id="cafe_hit" parameterType="int">
+	 UPDATE c_cafe
+              SET c_hit = c_hit + 1
+         WHERE c_idx=#{c_idx}
+	</update> 
+	
+	
+	
+		
+	<!-- 카페카테고리  시작 -->
+	<!-- collection Map타입으로 받는다.  -->
+   <!-- <select id = "cafe_list_local" parameterType="java.util.Map" resultMap="cafe_list_map">								
+		select * from c_cafe 
+		<if test="local!=null">
+		where c_addr like  #{local} || '%'
+		</if>
+	</select>	 -->
+	
+	
+	
+
+</mapper>

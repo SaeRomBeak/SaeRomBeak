@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+
+	<!-- 카페추출하기-->
+	 <select id="review_list" resultType="vo.ReviewVo">
+		select * from detail_review_view order by r_regdate
+	</select>
+
+	<!-- flqb -->
+	<insert id="review_insert" parameterType="vo.ReviewVo" >
+		insert into c_review values(c_review_seq.nextVal,
+									#{r_cot},#{m_idx},#{c_idx},#{r_grade},#{r_pwd},#{r_ip},sysdate)						
+	</insert>
+
+
+
+	 <select id="review_c_idx" parameterType="int" resultType="vo.ReviewVo">
+		select * from detail_review_view where c_idx=#{c_idx}
+	</select>
+
+
+	 <select id="review_m_idx" parameterType="int" resultType="vo.ReviewVo">
+		select * from detail_review_view where m_idx=#{m_idx}
+	</select>
+	
+	
+	<!-- 개인 리뷰수 구하는곳 -->
+	<select id="review_count" parameterType="int" resultType="int">
+		select nvl(count(*),0) from detail_review_view where m_idx=#{m_idx}
+	</select>
+	
+	
+	
+	<select id="review_r_idx" parameterType="int"  resultType="vo.ReviewVo">
+		select * from detail_review_view where r_idx=#{r_idx}
+	</select>
+	
+
+	<delete id="review_delete" parameterType="int">
+		delete from detail_review_view where r_idx=#{r_idx}
+	</delete>
+	
+	
+	<update id="review_update" parameterType="vo.ReviewVo">
+	update c_review set r_cot=#{r_cot}, 
+						c_idx=#{c_idx},
+						r_grade=#{r_grade},
+						r_pwd=#{r_pwd},
+						r_ip=#{r_ip},
+						r_regdate=sysdate where r_idx=#{r_idx}						
+	</update>
+	
+	<!-- 리뷰별 합계구하기 -->
+	<select id="full_review_su" parameterType="int" resultType="vo.ReviewVo">
+	select 
+  		  r.*, 
+  		 (bad+notBad+soso+likes+god) as total
+			from     
+			(
+  			 select
+		         nvl(avg(case r_grade when 1 then count(*) end), 0) bad,
+		         nvl(avg(case r_grade when 2 then count(*) end), 0) notBad,
+		         nvl(avg(case r_grade when 3 then count(*) end), 0) soso,
+		         nvl(avg(case r_grade when 4 then count(*) end), 0) likes,
+		         nvl(avg(case r_grade when 5 then count(*) end), 0) god
+	   from c_review
+	   where c_idx=#{c_idx}
+	   group by r_grade
+	) r
+	</select>
+	
+	<!-- 오늘 등록된 리뷰 -->
+	<select id="review_su" resultType="int">
+		select nvl(count(*),0) from c_review
+		where to_char(r_regdate,'YYYY-MM-dd') = to_char(sysdate,'YYYY-MM-dd')  
+	</select>
+	
+</mapper>

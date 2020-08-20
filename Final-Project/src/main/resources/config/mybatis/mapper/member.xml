@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<!-- 가입멤버추출하기  -->
+	 <select id="member_list" resultType="vo.MemberVo">
+		select * from c_member order by m_regdate desc
+	</select>
+
+	<!-- 오늘가입한수 -->
+	<select id="member_su" resultType="int">
+		select nvl(count(*),0) from c_member 
+		where to_char(m_regdate,'YYYY-MM-dd') = to_char(sysdate,'YYYY-MM-dd')  
+	</select>
+
+
+	<!-- 로그인 아이디 체크하기  -->
+	<select id="member_id" parameterType="String" resultType="vo.MemberVo">
+		select * from c_member where m_id=#{m_id}
+	</select>
+	
+	<select id="member_idx" parameterType="int" resultType="vo.MemberVo">
+		select * from c_member where m_idx=#{m_idx}
+	</select>
+	
+	<insert id="member_insert" parameterType="vo.MemberVo" >
+		insert into c_member values(c_member_SEQ.nextVal,
+									#{m_id},#{m_pwd},#{m_name},#{m_gender},#{m_tel},
+									#{m_email},#{m_photo},#{m_grade},#{m_ip},sysdate)
+	</insert>
+
+
+  <update id="member_update" parameterType="vo.MemberVo">
+  	update c_member set m_id=#{m_id},m_pwd=#{m_pwd},m_name=#{m_name},
+  						m_gender=#{m_gender}, m_tel=#{m_tel},m_email=#{m_email}, 
+  						m_grade=#{m_grade},m_ip=#{m_ip}
+  						where m_idx=#{m_idx}
+  </update>
+
+	<delete id="member_delete" parameterType="int" >
+	delete from c_member where m_idx=#{m_idx}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- autowired 지원속성  -->
+	<context:annotation-config/>
+	
+	<!-- autowire="default"
+	               default: byType-> byName
+	               byName : 이름이 일치하는객체를 연결
+	               byType : 타입이 일치하는객체를 연결
+	 -->
+	<bean id="cafe_service"  class="service.CafeServiceImpl" autowire="default"/>	
+	<bean id="review_service"  class="service.ReviewServiceImpl" autowire="default"/>	
+	<bean id="member_service"  class="service.MemberServiceImpl" autowire="default"/>	
+</beans>

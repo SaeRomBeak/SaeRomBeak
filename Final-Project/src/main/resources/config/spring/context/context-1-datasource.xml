@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:property-placeholder 
+				location="classpath:config/mybatis/db.properties"/>
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="ds">
+		<property value="${jdbc.driver}" name="driverClassName"/>
+		<property value="${jdbc.url}" name="url"/>
+		<property value="${jdbc.username}" name="username"/>
+		<property value="${jdbc.password}" name="password"/>
+		<property value="false" name="defaultAutoCommit"/>
+		<!-- 최대 connection 할 수 있는 수 설정  -->
+	
+		<property name="maxActive" value="10"></property>
+	</bean>
+	
+
+
+</beans>
