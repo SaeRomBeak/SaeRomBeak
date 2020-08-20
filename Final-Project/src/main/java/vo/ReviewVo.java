@@ -15,6 +15,7 @@ public class ReviewVo {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public ReviewVo(int m_idx, int c_idx, String r_grade, String r_cot, String r_pwd, String r_ip) {
 		super();
 		this.m_idx = m_idx;
