@@ -7,7 +7,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 카페추출하기-->
 	 <select id="cafe_list" resultType="vo.CafeVo">
 	 select * from c_cafe order by c_regdate desc
-	<!-- <![CDATA[ select * from c_cafe where rownum <= 6 order by c_name ]]> -->
 	</select>
 
 	<!-- 오늘 등록한 카페수  -->
@@ -25,13 +24,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<association property="review_list"  
                    column="{c_idx=c_idx}"
                    select="cafe_review_list"/> 
-                   
-         <!--   <collection property="review_list"   
-	               column="{c_idx=c_idx}"
-	               select="cafe_review_list" /> -->
-	</resultMap>
+		</resultMap>
 
-	<!-- 5개씩 뽑아오기 -->
+	<!-- 카테고리 5개씩 뽑아오기 -->
 	<select id="cafe_select" parameterType="java.util.Map" resultMap="cafe_list_map">
 		select a.* from 
 		(
@@ -42,11 +37,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		         <if test="local!=null">
 		         where c_addr like  #{local} || '%'
 		          </if>
+				 <if test="tag!=null">
+		         where c_tag like  #{tag} || '%'
+		          </if>
 		       order by c_regdate desc
 		    ) b 
 		) a
 		where a.RNUM between #{start} and  #{end} 
 	</select>
+
 
 	<!-- 리뷰랑 평점  -->
 	<select id="cafe_review_list"  resultType="vo.ReviewVo">
@@ -56,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   (select * from c_review where c_idx=#{c_idx} order by r_grade desc) r
 	where rownum = 1 
 	</select> 
+
 
 	<!-- 카페등록하기 -->
 	<insert id="cafe_insert" parameterType="vo.CafeVo" >
@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 
-
+	<!-- 카페 수정하기 -->
 	<update id="cafe_update" parameterType="vo.CafeVo" >
 		update c_cafe set c_name=#{c_name},c_addr=#{c_addr},	
 						  c_tel=#{c_tel}, c_price=#{c_price},
@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	
-	
+	<!-- 조회수올라가기 -->
 	<update id="cafe_hit" parameterType="int">
 	 UPDATE c_cafe
               SET c_hit = c_hit + 1

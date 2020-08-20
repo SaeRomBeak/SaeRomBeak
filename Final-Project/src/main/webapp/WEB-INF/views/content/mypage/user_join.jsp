@@ -67,6 +67,19 @@
   	
   	
   	
+  	//미리보기------------------------------------------------------
+ 	function showPreview(objFileInput) {
+ 	    if (objFileInput.files[0]) {
+ 	        var fileReader = new FileReader();
+ 	        fileReader.onload = function (e) {
+ 				$("#img-responsive").attr("src",e.target.result);
+ 	        }
+ 			fileReader.readAsDataURL(objFileInput.files[0]);
+ 	    }
+ 	}
+  	
+  	
+ 	//가입하기-------------------------------------------------
   	 function send(f) {
   		
   		var m_pwd1 = f.m_pwd1.value.trim();
@@ -161,7 +174,7 @@
 		            </div>
 		
 		            <div class="profileplace">
-		                <img class="img-responsive center-block" id="m_photo" 
+		                <img class="img-responsive center-block" id="img-responsive" 
 		                	src="${pageContext.request.contextPath}/img/mypage/user.jpg">
 		            </div>
 		
@@ -241,7 +254,9 @@
 		
 		                    <tr>
 		                        <th class="col-sm-3">Image</th>
-		                        <td class="col-sm-9"><input class="form-control" type="file" name="photo" maxlength="30"></td>
+		                        <td class="col-sm-9">
+		                        	<input class="form-control" type="file" name="photo" maxlength="30" onChange="showPreview(this);">
+		                        </td>
 		                    </tr>
 		
 							 

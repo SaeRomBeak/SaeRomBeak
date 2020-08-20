@@ -70,4 +70,12 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.delete("member.member_delete",m_idx);
 	}
 
+	
+	
+	@Override //회원사진수정 --------------------------------------------
+	public int image_update(MemberVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("member.image_update",vo);
+	}
+
 }

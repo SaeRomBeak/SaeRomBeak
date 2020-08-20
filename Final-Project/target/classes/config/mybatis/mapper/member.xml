@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from c_member order by m_regdate desc
 	</select>
 
+
 	<!-- 오늘가입한수 -->
 	<select id="member_su" resultType="int">
 		select nvl(count(*),0) from c_member 
@@ -21,27 +22,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from c_member where m_id=#{m_id}
 	</select>
 	
+	<!-- 회원1명 정보읽어오기  -->
 	<select id="member_idx" parameterType="int" resultType="vo.MemberVo">
 		select * from c_member where m_idx=#{m_idx}
 	</select>
 	
+	<!-- 회원추가하기  -->
 	<insert id="member_insert" parameterType="vo.MemberVo" >
 		insert into c_member values(c_member_SEQ.nextVal,
 									#{m_id},#{m_pwd},#{m_name},#{m_gender},#{m_tel},
 									#{m_email},#{m_photo},#{m_grade},#{m_ip},sysdate)
 	</insert>
 
-
-  <update id="member_update" parameterType="vo.MemberVo">
+	<!-- 회원정보수정하기  -->
+  	<update id="member_update" parameterType="vo.MemberVo">
   	update c_member set m_id=#{m_id},m_pwd=#{m_pwd},m_name=#{m_name},
   						m_gender=#{m_gender}, m_tel=#{m_tel},m_email=#{m_email}, 
   						m_grade=#{m_grade},m_ip=#{m_ip}
   						where m_idx=#{m_idx}
-  </update>
-
+ 	 </update>
+	
+	
+	<!-- 회원삭제하기 체크하기  -->
 	<delete id="member_delete" parameterType="int" >
 	delete from c_member where m_idx=#{m_idx}
 	</delete>
+	
+	<update id="image_update" parameterType="vo.MemberVo">
+		update c_member set m_photo=#{m_photo} where m_idx=#{m_idx}
+	</update>
 	
 	
 </mapper>

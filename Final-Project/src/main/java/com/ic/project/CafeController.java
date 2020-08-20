@@ -54,7 +54,9 @@ public class CafeController {
 	
 	//카테고리별 리스트로 넘어가기==============================================
 	@RequestMapping("/cafe_select.do")
-	public String category(String local, String page,
+	public String category(String local, 
+							String tag,
+							String page,
 						   Model model){
 		
 		 //페이징 처리하기 
@@ -69,7 +71,10 @@ public class CafeController {
 			
 		 if (local!=null) {
 			map.put("local", local);
-		}	
+		 }
+		 if (tag!=null) {
+			map.put("local", local);
+		 }	
 	    
 		//조회수처리하기 
 		session.removeAttribute("show");

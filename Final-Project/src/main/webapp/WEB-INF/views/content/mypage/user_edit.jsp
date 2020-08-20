@@ -114,7 +114,39 @@
  		f.submit();
  	}
   
-  	 
+  	//파일업로드 미리보기 ---------------------------------------------------
+ 	function showPreview(objFileInput) {
+ 	    if (objFileInput.files[0]) {
+ 	        var fileReader = new FileReader();
+ 	        fileReader.onload = function (e) {
+ 				$("#img-responsive").attr("src",e.target.result);
+ 	        }
+ 			fileReader.readAsDataURL(objFileInput.files[0]);
+ 	    }
+ 	}
+ 	//파일 업로드----------------------------------------------------
+ 	function upload_image(f){
+	
+ 		var form = new FormData(f);
+ 	 	
+ 		$.ajax({
+ 	        	url: "upload.do",
+ 				type: "POST",
+ 				data : form,
+ 				dataType: "json",
+ 				contentType: false,
+ 	    	    processData:false,
+ 				success: function(data)
+ 			    {
+ 					$("#photo").attr(src="${pageContext.request.contextPath}/img/member_upload/"+data.result);
+ 			    },
+ 			  	error: function(error) {
+ 		    		alert("error code=" + error.responseText);
+ 			  	}
+ 		});
+ 		
+ 	}
+ 	
   	///삭제하기---------------------------------------------------
   	function del(m_idx) {
 		
@@ -122,10 +154,7 @@
 		location.href = "member_delete.do?m_idx=" + m_idx;
 	}
     </script>
-    
-    
-    
-    
+ 
 </head>
 
 <body>
@@ -144,6 +173,20 @@
 						<h2>회원정보 페이지</h2>
 					</div>
 
+					<!-- 회원사진수정----------------------------------------------------------------------------------->
+			
+						<form id="pro_photo" method="post" enctype="multipart/form-data">
+						    <input type="hidden"  name="m_idx" value="${ vo.m_idx }">
+							<div class="profileplace">
+							<img class="img-responsive center-block"  id="img-responsive"
+								src="${pageContext.request.contextPath}/img/member_upload/${user.m_photo}">
+							<br>
+							<input type="file" id="photo" name="photo" onChange="showPreview(this);">
+							<input type="button" id="submit" value="등록"  onclick="upload_image(this.form);"/>
+						</div>
+						</form>
+	
+		
 					<!-- 회원정보수정----------------------------------------------------------------------------------->
 						<form method="POST" enctype="multipart/form-data">
 						    <input type="hidden" name="m_idx" value="${vo.m_idx}">

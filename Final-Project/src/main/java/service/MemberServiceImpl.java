@@ -61,4 +61,10 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return member_dao.delete(m_idx);
 	}
+
+	@Override  //회원사진수정--------------------------------
+	public int image_update(MemberVo vo) {
+		// TODO Auto-generated method stub
+		return member_dao.image_update(vo);
+	}
 }

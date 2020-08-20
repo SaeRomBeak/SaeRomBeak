@@ -43,7 +43,7 @@
 						    </div>
 						    <div class="cafeInfoBox">			
 						
-						 	 <h4 class="cafeInfoTitle">▶  ${vo.c_name}  ::  평점 ${vo.review_list.avg}</h4>	
+						 	 <h4 class="cafeInfoTitle">▶  ${vo.c_name} <c:if test="${vo.review_list ne null}"> :: 평점</c:if> ${vo.review_list.avg}</h4>	
 	
 							<!-- 작성된 리뷰가 없으면 ----------------------------------------------------------->
 						 	 <c:if test="${vo.review_list.r_idx eq null}">

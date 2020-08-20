@@ -313,5 +313,58 @@ public class MemberController {
 
 		return "redirect:Home.do";
 	}
+	
+	//프로필사진수정하는 ajax코드(진행중)=================================
+	@RequestMapping(value="/upload.do",
+				method = RequestMethod.POST, 
+				produces = "text/json;charset=utf-8")
+	@ResponseBody
+	public String upload(int m_idx,
+						@RequestParam MultipartFile photo) throws Exception{
+		
+		
+		//해당되는 멤버정보 가져오기
+		MemberVo vo = member_service.selectOne(m_idx);
+		
+		String web_path = "/img/member_upload/";
+		String abs_path = application.getRealPath(web_path);
+		
+		File file = new File(abs_path, vo.getM_photo());
+		file.delete();
+		
+		System.out.println(abs_path);
+		
+		//다시업로드-------------------
+		 String m_photo = "no_file";
 
+		 if(photo.isEmpty()) {
+			 System.out.println("photo is empty()");
+		 }
+		 
+		  if(!photo.isEmpty()) { 
+			  m_photo = photo.getOriginalFilename();
+		  
+			  File f = new File(abs_path,m_photo);
+		  
+			  if(f.exists()) { 
+				  long t = System.currentTimeMillis(); 
+				  m_photo = String.format("%d_%s",t,m_photo); 
+				  f = new File(abs_path,m_photo); 
+			  }
+			  	photo.transferTo(f); 
+			} 
+		  vo.setM_photo(m_photo);  
+		  
+		  int res = member_service.image_update(vo);
+		  
+		  //user정보가져오기
+		  MemberVo user =  (MemberVo) session.getAttribute("user");
+		  
+		  user.setM_photo(m_photo);
+			
+		  String json = String.format("{\"result\":\"%s\"}" ,vo.getM_photo());
+
+		  return json;
+			
+		}
 }

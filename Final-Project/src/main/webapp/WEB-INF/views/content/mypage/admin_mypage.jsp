@@ -47,7 +47,6 @@
 		
                             <div class="linkBox">                           
                                 <a href="mypage.do?m_idx=${user.m_idx}">내 페이지</a>
-                                <a href="member_modify_form.do?m_idx=${user.m_idx}">회원정보 수정</a> 
                            		<a href="cafe_insert_form.do">카페 등록</a>
 
                             </div>

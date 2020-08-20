@@ -188,7 +188,8 @@
 		        		<c:set var="tag" value="${fn:split(vo.c_tag,',')}"/>
 		        			<c:forEach var="t" begin="0" end="${fn:length(tag)-1}">
 			        			<li>
-			        				<input type="button" class="btn btn-info" value="${tag[t]}">
+			        				<input type="button" class="btn btn-info" value="${tag[t]}" 
+			        				onclick="location.href='cafe_select.do?tag=${vo.tag}&page=1'">
 			        			</li>
 		        			</c:forEach>
 		        		</ul>
@@ -292,7 +293,7 @@
 	                            
 	                            <div class="btnBox">
 	                            	<div class="btn-group">
-		                                <input type="button" class="btn btn-default" onclick="send(this.form)" value="등록">
+		                                <input type="button" class="btn btn-default" onclick="send(this.form);" value="등록">
 		                                <input type="button" class="btn btn-default" onclick="goBack();" value="취소">
 		                            </div>
                             	</div>

@@ -4,24 +4,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="review">
 
-	<!-- 카페추출하기-->
+	<!-- 리뷰리스트 -->
 	 <select id="review_list" resultType="vo.ReviewVo">
 		select * from detail_review_view order by r_regdate
 	</select>
 
-	<!-- flqb -->
+	<!-- 리뷰추가-->
 	<insert id="review_insert" parameterType="vo.ReviewVo" >
 		insert into c_review values(c_review_seq.nextVal,
 									#{r_cot},#{m_idx},#{c_idx},#{r_grade},#{r_pwd},#{r_ip},sysdate)						
 	</insert>
 
-
-
+	<!-- 카페 1개에 해당하는 리뷰 리스트 -->
 	 <select id="review_c_idx" parameterType="int" resultType="vo.ReviewVo">
 		select * from detail_review_view where c_idx=#{c_idx}
 	</select>
 
-
+	<!-- 내가쓴 리뷰 -->
 	 <select id="review_m_idx" parameterType="int" resultType="vo.ReviewVo">
 		select * from detail_review_view where m_idx=#{m_idx}
 	</select>
@@ -33,17 +32,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
-	
+	<!-- 리뷰한건당 정보 얻어오기-->
 	<select id="review_r_idx" parameterType="int"  resultType="vo.ReviewVo">
 		select * from detail_review_view where r_idx=#{r_idx}
 	</select>
 	
-
+	<!-- 리뷰삭제 -->
 	<delete id="review_delete" parameterType="int">
 		delete from detail_review_view where r_idx=#{r_idx}
 	</delete>
 	
-	
+	<!-- 리뷰수정-->
 	<update id="review_update" parameterType="vo.ReviewVo">
 	update c_review set r_cot=#{r_cot}, 
 						c_idx=#{c_idx},

@@ -33,7 +33,7 @@ CREATE TABLE c_cafe
 ALTER TABLE c_cafe ADD c_regdate DATE ; 
 
 
-
+select * from c_member
 --멤버테이블=========================================== 
 CREATE SEQUENCE c_member_seq;
 

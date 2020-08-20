@@ -9,12 +9,7 @@
 	
 	<!-- autowired 지원속성  -->
 	<context:annotation-config/>
-	
-	<!-- autowire="default"
-	               default: byType-> byName
-	               byName : 이름이 일치하는객체를 연결
-	               byType : 타입이 일치하는객체를 연결
-	 -->
+
 	<bean id="cafe_service"  class="service.CafeServiceImpl" autowire="default"/>	
 	<bean id="review_service"  class="service.ReviewServiceImpl" autowire="default"/>	
 	<bean id="member_service"  class="service.MemberServiceImpl" autowire="default"/>	
