@@ -34,7 +34,7 @@
 				
 			<div class="listBox">
 				<ul class="list">
-				<c:forEach items="${list_count}" var="vo" >
+				<c:forEach items="${list_count}" var="vo" varStatus="i" >
 					<li>
 					
 						<div class="cafeListBox">
@@ -43,7 +43,7 @@
 						    </div>
 						    <div class="cafeInfoBox">			
 						
-						 	 <h4 class="cafeInfoTitle">▶  ${vo.c_name} <c:if test="${vo.review_list ne null}"> :: 평점</c:if> ${vo.review_list.avg}</h4>	
+						 	 <h4 class="cafeInfoTitle">${vo.rnum}.${vo.c_name} <c:if test="${vo.review_list ne null}"> :: 평점</c:if> ${vo.review_list.avg}</h4>	
 	
 							<!-- 작성된 리뷰가 없으면 ----------------------------------------------------------->
 						 	 <c:if test="${vo.review_list.r_idx eq null}">

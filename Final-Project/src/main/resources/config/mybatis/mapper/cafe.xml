@@ -29,20 +29,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="cafe_select" parameterType="java.util.Map" resultMap="cafe_list_map">
 		select a.* from 
 		(
-		   select ROWNUM as RNUM, b.* 
+		   select ROWNUM as rnum, b.* 
 		   from
 		   ( 
 		       select * from c_cafe
 		         <if test="local!=null">
-		         where c_addr like  #{local} || '%'
+		         	where c_addr like  #{local} || '%'
 		          </if>
-		           <if test="tag!=null">
-		         where c_tag like '%' || #{tag} || '%'
+		          <if test="tag!=null">
+		         	where c_tag like '%' || #{tag} || '%'
 		          </if>
 		       order by c_regdate desc
 		    ) b 
 		) a
-		where a.RNUM between #{start} and  #{end} 
+		where a.rnum between #{start} and  #{end} 
 	</select>
 
 	<!-- 리뷰랑 평점  -->

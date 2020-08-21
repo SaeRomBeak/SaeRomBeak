@@ -8,7 +8,8 @@ public class CafeVo {
 		   c_menu1,c_menu2,c_menu3,c_menu4,c_tag,c_regdate,
 		   c_photo1,c_photo2,c_photo3,c_photo4, c_photo5,    
 		   local;
-			
+	int rnum;
+	
 	String [] c_photo_array = new String[5];
 	
 	
@@ -242,6 +243,15 @@ public class CafeVo {
 	public void setC_photo5(String c_photo5) {
 		this.c_photo5 = c_photo5;
 	}
+
+	public int getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+	
 	
 	
 }

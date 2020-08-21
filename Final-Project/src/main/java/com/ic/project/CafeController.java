@@ -68,11 +68,7 @@ public class CafeController {
 		 int start = (nPage-1) * MyConstant.Board.BLOCK_LIST + 1;
 		 int end   = start + MyConstant.Board.BLOCK_LIST - 1;
 		 
-		 //전체갯수 구하기(map)
-		 int rowTotal = cafe_service.selectRowTotal();
-		 //페이지메뉴생성
-		 String pageMenu = Paging.getPaging("cafe_select.do", nPage, rowTotal, 
-		 MyConstant.Board.BLOCK_LIST, MyConstant.Board.BLOCK_PAGE,local,tag);
+		
 		 
 	        
 	     Map map = new HashMap();
@@ -87,6 +83,14 @@ public class CafeController {
 			map.put("tag", tag);
 		 }	
 	    
+		 
+		 //전체갯수 구하기(map)
+		 int rowTotal = cafe_service.selectRowTotal(map);
+		 //페이지메뉴생성
+		 String pageMenu = Paging.getPaging("cafe_select.do", nPage, rowTotal, 
+		 MyConstant.Board.BLOCK_LIST, MyConstant.Board.BLOCK_PAGE,local,tag);
+		 
+		 
 		//조회수처리하기 
 		session.removeAttribute("show");
 
