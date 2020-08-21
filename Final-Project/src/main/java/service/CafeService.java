@@ -15,5 +15,7 @@ public interface CafeService {
 	public int delete(int c_idx);				//카페정보삭제
 	public int updateCount(int c_idx);			//카페조회수
 	public int cafe_count();					//오늘 등록한 카페 수 
+	public int selectRowTotal();				//페이징처리
+	public int update_image(CafeVo vo);			//이미지수정
 
 }

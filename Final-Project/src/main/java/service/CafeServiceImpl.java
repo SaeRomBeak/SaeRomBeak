@@ -68,4 +68,16 @@ public class CafeServiceImpl implements CafeService{
 		return cafe_dao.cafe_count();
 	}
 
+	@Override	//페이징처리----------------------------
+	public int selectRowTotal() {
+		// TODO Auto-generated method stub
+		return cafe_dao.selectRowTotal();	
+	}
+
+	@Override	//이미지수정---------------------------
+	public int update_image(CafeVo vo) {
+		// TODO Auto-generated method stub
+		return cafe_dao.update_image(vo);	
+	}
+
 }

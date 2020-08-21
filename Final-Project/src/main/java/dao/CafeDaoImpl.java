@@ -74,5 +74,19 @@ public class CafeDaoImpl implements CafeDao {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("cafe.cafe_su");	
 	}
+
+	//페이징처리---------------------------------------------------
+	@Override
+	public int selectRowTotal() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("cafe.cafe_row_total");	
+	}
+
+	//이미지수정---------------------------------------------------
+	@Override
+	public int update_image(CafeVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("cafe.cafe_image",vo);	
+	}
 			
 }

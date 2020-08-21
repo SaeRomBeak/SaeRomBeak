@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
-	<!-- 카페 카테고리별 구하기 -->
+	<!-- 카페 카테고리별 구하기-->
 	<resultMap type="vo.CafeVo" id="cafe_list_map">
 	   <result  property="c_idx"  column="c_idx"/>
 
@@ -24,8 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<association property="review_list"  
                    column="{c_idx=c_idx}"
                    select="cafe_review_list"/> 
-		</resultMap>
-
+	</resultMap>
 	<!-- 카테고리 5개씩 뽑아오기 -->
 	<select id="cafe_select" parameterType="java.util.Map" resultMap="cafe_list_map">
 		select a.* from 
@@ -37,15 +36,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		         <if test="local!=null">
 		         where c_addr like  #{local} || '%'
 		          </if>
-				 <if test="tag!=null">
-		         where c_tag like  #{tag} || '%'
+		           <if test="tag!=null">
+		         where c_tag like '%' || #{tag} || '%'
 		          </if>
 		       order by c_regdate desc
 		    ) b 
 		) a
 		where a.RNUM between #{start} and  #{end} 
 	</select>
-
 
 	<!-- 리뷰랑 평점  -->
 	<select id="cafe_review_list"  resultType="vo.ReviewVo">
@@ -55,6 +53,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   (select * from c_review where c_idx=#{c_idx} order by r_grade desc) r
 	where rownum = 1 
 	</select> 
+
+
+
+	<!-- 전체게시물 수  -->
+   <select id="cafe_row_total" parameterType="Map" resultType="int">
+       select nvl(count(*),0) from c_cafe
+          <if test="local!=null">
+              where c_addr like  #{local} || '%'
+          </if>
+		  <if test="tag!=null">
+                where c_tag like '%' || #{tag} || '%'
+           </if>
+   </select>
 
 
 	<!-- 카페등록하기 -->
@@ -89,6 +100,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
+	<!-- 이미지수정 -->
+	<update id="cafe_image" parameterType="vo.CafeVo" >
+	update c_cafe set c_photo1=#{c_photo1},c_photo2=#{c_photo2},
+						c_photo3=#{c_photo3},c_photo4=#{c_photo4},
+						c_photo5=#{c_photo5}
+					  where c_idx=#{c_idx}							
+	</update>
+	
+	
 	<!-- 카페정보삭제하기 -->
 	<delete id="cafe_delete" parameterType="int">
 		delete from c_cafe where c_idx=#{c_idx}
@@ -101,20 +121,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
               SET c_hit = c_hit + 1
          WHERE c_idx=#{c_idx}
 	</update> 
-	
-	
-	
-		
-	<!-- 카페카테고리  시작 -->
-	<!-- collection Map타입으로 받는다.  -->
-   <!-- <select id = "cafe_list_local" parameterType="java.util.Map" resultMap="cafe_list_map">								
-		select * from c_cafe 
-		<if test="local!=null">
-		where c_addr like  #{local} || '%'
-		</if>
-	</select>	 -->
-	
-	
-	
 
 </mapper>

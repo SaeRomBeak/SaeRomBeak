@@ -52,7 +52,7 @@
             </li>
             
             <li>
-                <a href="cafe_select.do?local=부산">
+                <a href="cafe_select.do?local=부산&page=1">
                     <img src="${pageContext.request.contextPath}/img/category/busan.jpg" class="img-rounded" alt="Cinque Terre">
                     <h3>부산은 여기로</h3>
                 </a>

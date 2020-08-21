@@ -116,10 +116,24 @@
 
   }
 
+	//이미지 수정하기-----------------------------------------------
+	function send_image(f) {
+		var photo1 = f.photo[0].value.trim();
+		var photo2 = f.photo[1].value.trim();
+		var photo3 = f.photo[2].value.trim();
+		var photo4 = f.photo[3].value.trim();
+		var photo5 = f.photo[4].value.trim();
+		
+		alert('등록이완료되었습니다.');
+		f.action = "cafe_image.do"; 
+		f.submit();
+ 		
+	}
+	
 	//이전페이지로 이동----------------------------------------------
 	function goBack() {
 		window.history.back();
-	}
+    }
 	
 </script>
 	
@@ -249,8 +263,31 @@
 			            </div>
 			        </div>
 			    </form>
+			    
 			    <br><br>
 			
+				<!-- 사진수정------------------------------------------------------------->
+				  <form  method="post" enctype="multipart/form-data">
+				  	<input type="hidden"  name="c_idx"  value="${vo.c_idx}">
+			  		<table class="table">
+			            <tr>
+			                <th class="col-sm-1"><span class="group-addon"><i class="glyphicon glyphicon-duplicate"></i></span></th>
+			                <td class="col-sm-11">
+			                    <input type="file" name="photo" class="form-control" value="${vo.c_photo1}">
+			                    <input type="file" name="photo" class="form-control" value="${vo.c_photo2}">
+			                    <input type="file" name="photo" class="form-control" value="${vo.c_photo3}">
+			                    <input type="file" name="photo" class="form-control" value="${vo.c_photo4}">
+			                    <input type="file" name="photo" class="form-control" value="${vo.c_photo1}">
+			                </td>
+			            </tr>
+			        </table>
+			
+			        <div class="a-btn">
+			            <div class="btn-group">
+			                <input type="button" class="btn" value="등록" onclick="send_image(this.form);">
+			            </div>
+			        </div>
+			    </form>
 			</div>
 		</div>
 		

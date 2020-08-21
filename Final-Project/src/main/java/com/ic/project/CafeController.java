@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import common.MyConstant;
 import dao.CafeDao;
 import dao.ReviewDao;
 import service.CafeService;
 import service.ReviewService;
+import util.Paging;
 import vo.CafeVo;
 import vo.ReviewVo;
 
@@ -54,40 +56,45 @@ public class CafeController {
 	
 	//카테고리별 리스트로 넘어가기==============================================
 	@RequestMapping("/cafe_select.do")
-	public String category(String local, 
-							String tag,
-							String page,
+	public String category(Integer page, 
+							String local,String tag,
 						   Model model){
 		
 		 //페이징 처리하기 
-		 int nPage = Integer.parseInt(page);
-	        
-	     int start = (nPage-1)*5 + 1;
-	     int end   = start+5 - 1;
+		 int nPage = 1;
+	     
+		 if(page!=null) nPage = page;
+			
+		 int start = (nPage-1) * MyConstant.Board.BLOCK_LIST + 1;
+		 int end   = start + MyConstant.Board.BLOCK_LIST - 1;
+		 
+		 //전체갯수 구하기(map)
+		 int rowTotal = cafe_service.selectRowTotal();
+		 //페이지메뉴생성
+		 String pageMenu = Paging.getPaging("cafe_select.do", nPage, rowTotal, 
+		 MyConstant.Board.BLOCK_LIST, MyConstant.Board.BLOCK_PAGE,local,tag);
+		 
 	        
 	     Map map = new HashMap();
 		 map.put("start", start);
 		 map.put("end", end);
-			
+	
+		 
 		 if (local!=null) {
 			map.put("local", local);
 		 }
 		 if (tag!=null) {
-			map.put("local", local);
+			map.put("tag", tag);
 		 }	
 	    
 		//조회수처리하기 
 		session.removeAttribute("show");
-		
-		//전체리스트에서 5개씩 나눠서 페이지 처리
-		List<CafeVo> list = cafe_service.selectList();
-		int page_su = (int) Math.ceil(list.size()/5.0);
-		
+
 		//카페정보+리뷰정보 한번에 가져오기
 		List<CafeVo> list_count = cafe_service.cafe_select(map);
 		
 		model.addAttribute("list_count", list_count);
-		model.addAttribute("page_su", page_su);
+		model.addAttribute("pageMenu", pageMenu);
 	 
 		return "/content/cafe/cafe_list";
 	}
@@ -226,4 +233,71 @@ public class CafeController {
 		return "redirect:admin_mypage.do";
 	}
 	
+	
+	//카페사진 수정하기=====================================================
+	@RequestMapping("/cafe_image.do")
+	public String cafe_image(CafeVo vo,
+							  @RequestParam("photo") MultipartFile[] photo_array,
+							  Model model) throws Exception {
+		
+		CafeVo image = cafe_service.selectOne(vo.getC_idx());
+		
+		String web_path = "/img/cafe_upload/";
+		String abs_path = application.getRealPath(web_path);
+		
+		//파일삭제
+		File file = new File(abs_path, image.getC_photo1());
+		file.delete();
+		
+		file = new File(abs_path, image.getC_photo2());
+		file.delete();
+		
+		file = new File(abs_path, image.getC_photo3());
+		file.delete();
+		
+		file = new File(abs_path, image.getC_photo4());
+		file.delete();
+		
+		file = new File(abs_path, image.getC_photo5());
+		file.delete();
+		
+		//다시 등록-----------------------------------
+		for(int i=0; i<photo_array.length; i++) {
+			
+			MultipartFile photo = photo_array[i];
+			
+			String c_photo ="no_file";
+			
+			if(!photo.isEmpty()) {
+				//업로드된 파일명
+				c_photo = photo.getOriginalFilename();
+				
+				File f = new File(abs_path,c_photo);
+
+				if(f.exists()) {
+					long t = System.currentTimeMillis();
+					c_photo = String.format("%d_%s",t,c_photo);
+					f = new File(abs_path,c_photo);
+				}
+				photo.transferTo(f);
+			}
+		
+			if(i==0) 
+				vo.setC_photo1(c_photo);
+			else if(i==1) 
+				vo.setC_photo2(c_photo);
+			else if(i==2) 
+				vo.setC_photo3(c_photo);
+			else if(i==3) 
+				vo.setC_photo4(c_photo);
+			else if(i==4) 
+				vo.setC_photo5(c_photo);
+		}
+
+		
+		int res = cafe_service.update_image(vo);
+		model.addAttribute("vo",vo);
+
+		return "redirect:admin_mypage.do";
+	}
 }

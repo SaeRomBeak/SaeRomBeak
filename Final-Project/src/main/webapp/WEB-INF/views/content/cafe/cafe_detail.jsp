@@ -123,11 +123,20 @@
     		<ul class="swiper-wrapper">
     			<li class="swiper-slide">
     				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo1}">
+    			</li>  
+    			<li class="swiper-slide">
     				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo2}">
-    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo3}">
-    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo4}">
-    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo5}">
-    			</li>    			
+    			</li>  
+    			<li class="swiper-slide">
+    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo3}">   	
+    			</li>  
+    			<li class="swiper-slide">
+    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo4}">   	
+    			</li>  
+    			<li class="swiper-slide">
+    				<img alt="cafe 이미지" src="${pageContext.request.contextPath}/img/cafe_upload/${vo.c_photo5}">   	
+    			</li>  
+    			  			
     		</ul>
     	</div>
     
@@ -189,7 +198,7 @@
 		        			<c:forEach var="t" begin="0" end="${fn:length(tag)-1}">
 			        			<li>
 			        				<input type="button" class="btn btn-info" value="${tag[t]}" 
-			        				onclick="location.href='cafe_select.do?tag=${c_tag}&page=1'">
+			        				onclick="location.href='cafe_select.do?tag=${tag[t]}&page=1'">
 			        			</li>
 		        			</c:forEach>
 		        		</ul>
@@ -364,6 +373,7 @@
     
 	<!-- Swiper JS -->
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+	
 	<!-- Initialize Swiper -->
 	<script>
 	    var swiper = new Swiper('.swiper-container', {

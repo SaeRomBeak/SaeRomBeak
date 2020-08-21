@@ -66,11 +66,9 @@
 			</div>
 	
 			<div class="pageBox">
-		        <ul class="pagination">
-		         <c:forEach  varStatus="i" begin="1" end="${page_su}">
-		            <li><a href="cafe_select.do?local=${param.local}&page=${i.count}">${i.count}</a></li>
-		         </c:forEach>
-		        </ul>
+				<ul class="pagination">
+		   		${pageMenu}
+		   		</ul>
 	     	</div>
 					
 		</div>
