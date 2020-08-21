@@ -189,7 +189,7 @@
 		        			<c:forEach var="t" begin="0" end="${fn:length(tag)-1}">
 			        			<li>
 			        				<input type="button" class="btn btn-info" value="${tag[t]}" 
-			        				onclick="location.href='cafe_select.do?tag=${vo.tag}&page=1'">
+			        				onclick="location.href='cafe_select.do?tag=${c_tag}&page=1'">
 			        			</li>
 		        			</c:forEach>
 		        		</ul>
