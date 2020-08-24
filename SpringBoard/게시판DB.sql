@@ -3,7 +3,7 @@
 --일련번호 관리객체
 create sequence seq_board_idx
 
---테이블
+--게시판 테이블
 create table board
 (
    idx  	int,				--일련번호
@@ -20,7 +20,6 @@ create table board
    step 	int,				--그룹글순서
    depth 	int 				--답글의 깊이(답글(1)-답글(2)-답글(3))
 )
-
 --기본키
 alter table board
   add constraint  pk_board_idx primary key(idx)
@@ -29,6 +28,22 @@ alter table board
 alter table board
   add constraint  fk_board_m_idx  foreign key(m_idx)
                                   references member(m_idx)
+
+
+--회원테이블
+ create table member
+ (
+ 	
+ 		m_idx     int,   		 		  --일련번호
+ 		m_id	  varchar2(100) not null, --아이디
+ 		m_name    varchar2(100) not null, --이름 
+ 		m_pwd  	  varchar2(100) not null, --비번
+ 		m_zipcode varchar2(100) not null, --우편번호
+ 		m_addr	  varchar2(500) not null, --주소
+ 		m_ip	  varchar2(100) not null, --IP
+ 		m_regdata date					  --가입일자		
+ )
+
 
 select * from member                                                                    
     
@@ -72,8 +87,7 @@ insert into board values(seq_board_idx.nextVal,
                          2,
                          2);
                          
-select * from board   
-order by ref desc,step asc                                               
+select * from board  order by ref desc,step asc                                               
                                                                            
 commit                                                                                                    
      
@@ -81,7 +95,7 @@ commit
 select * from member                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 
 
---페이징 처리를 위하 SQL
+--페이징 처리를 위한 SQL
 select  *  from
 (
 	select 
@@ -95,11 +109,6 @@ where no between 6 and 10
 
 //전체게시물수 구하기
 select nvl(count(*),0) from board
-
-
-
-
-
 
 */
 
